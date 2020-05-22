@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+{#    这块容易出现引入路径问题#}
+	<title>Complex Layout - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href={% static 'ui/themes/default/easyui.css' %}>
+	<link rel="stylesheet" type="text/css" href={% static 'ui/themes/icon.css' %}>
+	<link rel="stylesheet" type="text/css" href={% static 'ui/demo/demo.css' %}>
+{#    下面引入路径的问题就是这样的不能进行变更#}
+	<script type="text/javascript" src={% static 'ui/jquery.min.js' %}></script>
+    <script type="text/javascript" src={% static 'ui/jquery.easyui.min.js' %}></script>
+</head>
+<body class="easyui-layout">
+
+		<div data-options="region:'south',split:true" style="height:50px;"></div>
+			<div id="aa" class="easyui-accordion" data-options="fit:true,border:false">
+				<div title="part1"  style="padding:10px;">
+                    <a id="anaD1" class="jd-menu"  href="{% url 'analysisWeb:analysis1' %}">0</a>
+{#					五一期间阅读时长大于15分钟的用户在不同阅读区间的人数占比情况柱状图#}
+				</div>
+			</div>
+		<div data-options="region:'center',title:'指标系数-“五一期间日活分析',iconCls:'icon-ok'">
+			{% block content %}{% endblock %}
+		</div>
+</html>

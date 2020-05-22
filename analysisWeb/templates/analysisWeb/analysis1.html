@@ -1,0 +1,86 @@
+{% extends "analysisWeb/layout.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "/static/echarts/echarts.min.js"></script>
+</head>
+<body>
+  <div id="main1" style="width: 500px;height: 300px;float:left; bored:1px solid #333;"></div>
+  <div id="main2" style="width: 500px;height: 300px;float:left; bored:1px solid #333;"></div>
+  <script type="text/javascript">
+      {#从后台取数据，将js加进来，rhgt#}
+      let kv = new Array();//声明一个新的字典
+      kv = {{ dict_list|safe }};//取出后台传递的数据，此处添加safe过滤避免警告
+      let test = new Array();//声明一个新的字典用于存放数据
+     for (let logKey in kv) {
+    //将对应键值对取出存入test，logKey 为该字典的键
+     test.push({value: kv[logKey], name: logKey});
+     }
+     {#画图表#}
+      let myChart1 = echarts.init(document.getElementById('main1'));
+      let option1 = {
+          title:{
+              text:'5月1日不同阅读时长人数总量柱状图'
+          },
+          tooltip:{},
+          legend:{
+              data:['人数总量']
+          },
+          xAxis:{
+              data: ['15-45','45-75','75-105','105-135'],
+              name:'(分钟)'
+          },
+          yAxis:{
+              name:"人数（/个）"
+          },
+          series:[{
+                  name:'5月1日不同阅读时长人数总量',
+                  type:'bar',
+                  data:
+
+                  {{ read_list }}
+          }]
+      };
+      myChart1.setOption(option1);
+   {#饼状图#}
+      let myChart2 = echarts.init(document.getElementById('main2'));
+      let option2 = {
+          title:{
+              text:'5月1日不同阅读时长人数占比饼状图'
+          },
+          tooltip:{
+              triggerL:'item',
+              formatter:"{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend:{
+              data:['5月1日不同阅读时长人数总量']
+          },
+           series : [
+        {
+            name: '总人数：13326',
+            type: 'pie',    // 设置图表类型为饼图
+            radius: '55%',  // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
+            data:test,
+                // 数据数组，name 为数据项名称，value 为数据项值
+
+
+        }
+    ]
+      };
+      myChart2.setOption(option2);
+
+
+
+  </script>
+</body>
+</html>
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
